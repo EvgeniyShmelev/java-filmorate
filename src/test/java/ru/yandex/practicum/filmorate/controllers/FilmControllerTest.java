@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @SpringBootTest
 class FilmControllerTest {
 
-    //FilmController filmController = new FilmController();
 
     @Test
     void checkValidFilmName() {
@@ -37,6 +36,9 @@ class FilmControllerTest {
         Film film2 = new Film("Jack Sparrow 2", testDescription,
                 LocalDate.of(2004, 1, 1), Duration.ofMinutes(120));
         Assertions.assertFalse(FilmController.validate(film2));
+        Film film3 = new Film("Jack Sparrow 3 ", "",
+                LocalDate.of(1900, 3, 25), Duration.ofMinutes(200));
+        Assertions.assertTrue(FilmController.validate(film3));
     }
 
     @Test

@@ -9,8 +9,7 @@ import java.time.LocalDate;
 
 @SpringBootTest
 class UserControllerTest {
-
-
+    
     @Test
     void checkValidUserLogin() {
         User Evgen = new User("jeka@mail.ru", "login1", "Evgen",
@@ -46,6 +45,7 @@ class UserControllerTest {
                 LocalDate.of(2008, 5, 12));
         Assertions.assertTrue(UserController.validate(Igor));
     }
+
     @Test
     void checkValidUserBirthday() {
         User Evgen = new User("jeka@mail.ru", "login1", "Evgen",

@@ -50,12 +50,13 @@ public class FilmController {
     }
 
     public static boolean validate(Film film) {
-        final LocalDate RELEASE_DATE = LocalDate.of(1895, 12, 28);
+        final LocalDate releaseDate = LocalDate.of(1895, 12, 28);
 
         return !(film.getName() == null)
                 && !(film.getName().isBlank())
                 && (film.getDescription().length() <= 200)
-                && (film.getReleaseDate().isAfter(RELEASE_DATE))
+                && (film.getDescription().length() > 0)
+                && (film.getReleaseDate().isAfter(releaseDate))
                 && (!film.getDuration().isNegative());
     }
 }
