@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping
-    public User create(@RequestBody User user) {
+    public User create(@RequestBody User user) throws ValidationException {
         if (validate(user)) {
             log.info("Добавлен пользователь: " + user);
             users.put(user.getId(), user);
@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @PutMapping
-    public User update(@RequestBody User user) {
+    public User update(@RequestBody User user) throws ValidationException {
         if (validate(user)) {
             log.info("Обновлены данные " + user);
             users.put(user.getId(), user);

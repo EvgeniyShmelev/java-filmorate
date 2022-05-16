@@ -5,17 +5,18 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 @RequestMapping("/films")
 @Slf4j
 public class FilmController {
-    private final Map<Integer, Film> films = new HashMap<>();
+    private final Map<Integer, Film> films = new ConcurrentHashMap<>();
 
     @GetMapping
     public Collection<Film> getFilms() {
@@ -23,7 +24,7 @@ public class FilmController {
     }
 
     @PostMapping
-    public Film create(@RequestBody Film film) {
+    public Film create(@RequestBody Film film) throws ValidationException {
         if (validate(film)) {
             if (films.containsKey(film.getId())) {
                 log.error("Фильм с ID #" + film.getId() + " уже существует!");
@@ -39,7 +40,7 @@ public class FilmController {
 
 
     @PutMapping
-    public Film update(@RequestBody Film film) {
+    public Film update(@RequestBody Film film) throws ValidationException {
         if (validate(film)) {
             log.info("Обновлен фильм: " + film);
             films.put(film.getId(), film);
@@ -49,14 +50,14 @@ public class FilmController {
         }
     }
 
-    public static boolean validate(Film film) {
+    public static boolean validate( Film film) {
         final LocalDate releaseDate = LocalDate.of(1895, 12, 28);
 
         return !(film.getName() == null)
                 && !(film.getName().isBlank())
                 && (film.getDescription().length() <= 200)
                 && (film.getDescription().length() > 0)
-                && (film.getReleaseDate().isAfter(releaseDate))
-                && (!film.getDuration().isNegative());
+                && (!film.getDuration().isNegative())
+                && (film.getReleaseDate().isAfter(releaseDate));
     }
 }

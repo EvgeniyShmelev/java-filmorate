@@ -1,7 +1,8 @@
 package ru.yandex.practicum.filmorate.exceptions;
 
-//непроверяемое исключение
-public class ValidationException extends RuntimeException {
+/*Пользователь ввел некорректные данные - вполне себе штатная ситуация,
+  пусть тут будет проверяемое исключение*/
+public class ValidationException extends Exception {
     public ValidationException() {
     }
 
