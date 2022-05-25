@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.storage.user;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import ru.yandex.practicum.filmorate.exceptions.UserAlreadyExistException;
 import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
@@ -20,10 +21,8 @@ public class InMemoryUserStorage extends InMemoryGeneralStorage<User> implements
 
     public static boolean validate(User user) {
 
-        return !(user.getEmail().isBlank())
-                && !(user.getLogin() == null)
-                && !(user.getLogin().isBlank())
-                && !(user.getLogin().contains(" "))
+        return StringUtils.hasText(user.getEmail())
+                && StringUtils.hasText(user.getLogin())
                 && Pattern.compile("(.+@.+\\..+)").matcher(user.getEmail()).matches()
                 && (user.getBirthday().isBefore(LocalDate.now()));
     }
