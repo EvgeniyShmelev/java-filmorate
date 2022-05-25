@@ -3,6 +3,9 @@ package ru.yandex.practicum.filmorate.controllers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.exceptions.UserAlreadyExistException;
+import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
+import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.film.service.UserService;
 
@@ -21,22 +24,22 @@ public class UserController {
     }
 
     @PostMapping
-    public User add(@RequestBody @Valid User user) {
+    public User add(@RequestBody @Valid User user) throws UserAlreadyExistException, ValidationException {
         return userService.add(user);
     }
 
     @PutMapping
-    public User update(@RequestBody @Valid User user) {
+    public User update(@RequestBody @Valid User user) throws UserNotFoundException {
         return userService.update(user);
     }
 
     @GetMapping("/{id}")
-    public User get(@PathVariable int id) {
+    public User get(@PathVariable int id) throws UserNotFoundException {
         return userService.getUserById(id);
     }
 
     @DeleteMapping
-    public void remove(@PathVariable("id") int id) {
+    public void remove(@PathVariable("id") int id) throws UserNotFoundException {
         userService.remove(id);
     }
 
@@ -47,25 +50,25 @@ public class UserController {
 
     //Добавление в друзья
     @PutMapping("/{id}/friends/{friendId}")
-    public void addFriend(@PathVariable int id, @PathVariable int friendId) {
+    public void addFriend(@PathVariable int id, @PathVariable int friendId) throws UserNotFoundException {
         userService.addFriend(id, friendId);
     }
 
     //Удаление из друзей
     @DeleteMapping("/{id}/friends/{friendId}")
-    public void delFriend(@PathVariable int id, @PathVariable int friendId) {
+    public void delFriend(@PathVariable int id, @PathVariable int friendId) throws UserNotFoundException {
         userService.removeFriends(id, friendId);
     }
 
     //Возвращаем список пользователей, являющихся его друзьями
     @GetMapping("/{id}/friends")
-    public Collection<User> getFriends(@PathVariable int id) {
+    public Collection<User> getFriends(@PathVariable int id) throws UserNotFoundException {
         return userService.getFriends(id);
     }
 
     //Возвращаем список друзей, общих с другим пользователем
     @GetMapping("/{id}/friends/common/{otherId}")
-    public Collection<User> getCommonFriends(@PathVariable int id, @PathVariable int otherId) {
+    public Collection<User> getCommonFriends(@PathVariable int id, @PathVariable int otherId) throws UserNotFoundException {
         return userService.getMutualFriends(id, otherId);
     }
 }

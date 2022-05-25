@@ -1,6 +1,6 @@
 package ru.yandex.practicum.filmorate.storage.film;
 
-import lombok.SneakyThrows;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -26,9 +26,8 @@ public class InMemoryFilmStorage extends InMemoryGeneralStorage<Film> implements
                 && (film.getReleaseDate().isAfter(releaseDate));
     }
 
-    @SneakyThrows
     @Override
-    public Film add(Film film) {
+    public Film add(Film film) throws FilmAlreadyExistException, ValidationException {
         if (validate(film)) {
             if (general.containsKey(film.getId())) {
                 log.error("Фильм с ID #" + film.getId() + " уже существует!");
@@ -45,9 +44,8 @@ public class InMemoryFilmStorage extends InMemoryGeneralStorage<Film> implements
         return film;
     }
 
-    @SneakyThrows
     @Override
-    public Film update(Film film) {
+    public Film update(Film film) throws FilmNotFoundException {
         if (general.containsKey(film.getId())) {
             general.put(film.getId(), film);
             log.info("Обновлен фильм: " + film);
@@ -58,9 +56,8 @@ public class InMemoryFilmStorage extends InMemoryGeneralStorage<Film> implements
         }
     }
 
-    @SneakyThrows
     @Override
-    public void remove(Integer id) {
+    public void remove(Integer id) throws FilmNotFoundException {
         if (general.containsKey(id)) {
             general.remove(id);
             log.info("Удален " + general.get(id));
@@ -69,9 +66,8 @@ public class InMemoryFilmStorage extends InMemoryGeneralStorage<Film> implements
         }
     }
 
-    @SneakyThrows
     @Override
-    public Film get(Integer id) {
+    public Film get(Integer id) throws FilmNotFoundException {
         if (general.containsKey(id)) {
             return general.get(id);
         } else {

@@ -2,6 +2,10 @@ package ru.yandex.practicum.filmorate.storage.film.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exceptions.FilmAlreadyExistException;
+import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
+import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
+import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
@@ -22,19 +26,19 @@ public class FilmService {
         this.userStorage = userStorage;
     }
 
-    public Film add(Film film) {
+    public Film add(Film film) throws ValidationException, FilmAlreadyExistException {
         return filmStorage.add(film);
     }
 
-    public Film update(Film film) {
+    public Film update(Film film) throws FilmNotFoundException {
         return filmStorage.update(film);
     }
 
-    public Film get(Integer id) {
+    public Film get(Integer id) throws FilmNotFoundException {
         return filmStorage.get(id);
     }
 
-    public void remove(Integer id) {
+    public void remove(Integer id) throws FilmNotFoundException {
         filmStorage.remove(id);
     }
 
@@ -43,7 +47,7 @@ public class FilmService {
     }
 
     //Добавление лайка фильму
-    public void addLike(Integer filmId, Integer userId) {
+    public void addLike(Integer filmId, Integer userId) throws FilmNotFoundException, UserNotFoundException {
         Film film = filmStorage.get(filmId);
         User user = userStorage.getUserById(userId);
 
@@ -54,7 +58,7 @@ public class FilmService {
     }
 
     //Удаление лайка у фильма
-    public void removeLike(Integer filmId, Integer userId) {
+    public void removeLike(Integer filmId, Integer userId) throws FilmNotFoundException, UserNotFoundException {
         Film film = filmStorage.get(filmId);
         User user = userStorage.getUserById(userId);
 

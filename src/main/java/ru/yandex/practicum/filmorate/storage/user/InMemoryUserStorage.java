@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.storage.user;
 
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -27,9 +26,8 @@ public class InMemoryUserStorage extends InMemoryGeneralStorage<User> implements
                 && (user.getBirthday().isBefore(LocalDate.now()));
     }
 
-    @SneakyThrows//бросает проверяемое исключение
     @Override
-    public User add(User user) {
+    public User add(User user) throws UserAlreadyExistException, ValidationException {
         if (validate(user)) {
             if (general.containsKey(user.getId())) {
                 log.error("User с ID #" + user.getId() + " уже существует!");
@@ -46,9 +44,8 @@ public class InMemoryUserStorage extends InMemoryGeneralStorage<User> implements
         return user;
     }
 
-    @SneakyThrows
     @Override
-    public User update(User user) {
+    public User update(User user) throws UserNotFoundException {
         if (general.containsKey(user.getId())) {
             //для проверки на отрицательный id
             general.replace(user.getId(), user);
@@ -60,9 +57,8 @@ public class InMemoryUserStorage extends InMemoryGeneralStorage<User> implements
         }
     }
 
-    @SneakyThrows
     @Override
-    public void remove(Integer id) {
+    public void remove(Integer id) throws UserNotFoundException {
         if (general.containsKey(id)) {
             general.remove(id);
             log.info("Удален " + general.get(id));
@@ -71,9 +67,8 @@ public class InMemoryUserStorage extends InMemoryGeneralStorage<User> implements
         }
     }
 
-    @SneakyThrows
     @Override
-    public User getUserById(Integer id) {
+    public User getUserById(Integer id) throws UserNotFoundException {
         if (general.containsKey(id)) {
             return general.get(id);
         } else {
@@ -82,7 +77,7 @@ public class InMemoryUserStorage extends InMemoryGeneralStorage<User> implements
     }
 
     //Получение друзей пользователя
-    public List<User> getFriends(Integer id) {
+    public List<User> getFriends(Integer id) throws UserNotFoundException {
         List<User> userFriends = new ArrayList<>();
         if (getUserById(id).getFriends() != null) {
             for (Integer userFriend : getUserById(id).getFriends())

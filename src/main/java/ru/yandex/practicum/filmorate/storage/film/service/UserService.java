@@ -2,6 +2,9 @@ package ru.yandex.practicum.filmorate.storage.film.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exceptions.UserAlreadyExistException;
+import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
+import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
@@ -20,19 +23,19 @@ public class UserService {
         this.userStorage = userStorage;
     }
 
-    public User add(User user) {
+    public User add(User user) throws UserAlreadyExistException, ValidationException {
         return userStorage.add(user);
     }
 
-    public User update(User user) {
+    public User update(User user) throws UserNotFoundException {
         return userStorage.update(user);
     }
 
-    public User getUserById(Integer id) {
+    public User getUserById(Integer id) throws UserNotFoundException {
         return userStorage.getUserById(id);
     }
 
-    public void remove(Integer id) {
+    public void remove(Integer id) throws UserNotFoundException {
         userStorage.remove(id);
     }
 
@@ -41,7 +44,7 @@ public class UserService {
     }
 
     //Добавление в друзья
-    public void addFriend(Integer id, Integer friendId) {
+    public void addFriend(Integer id, Integer friendId) throws UserNotFoundException {
         //То есть если Лена стала другом Саши, то это значит, что Саша теперь друг Лены.
         User user = userStorage.getUserById(id);
         User friend = userStorage.getUserById(friendId);
@@ -58,7 +61,7 @@ public class UserService {
     }
 
     //Удаление из друзей
-    public void removeFriends(Integer id, Integer friendId) {
+    public void removeFriends(Integer id, Integer friendId) throws UserNotFoundException {
         User user = userStorage.getUserById(id);
         User friend = userStorage.getUserById(friendId);
 
@@ -71,12 +74,12 @@ public class UserService {
     }
 
     //Возвращаем список пользователей, являющихся его друзьями
-    public Collection<User> getFriends(Integer id) {
+    public Collection<User> getFriends(Integer id) throws UserNotFoundException {
         return userStorage.getFriends(id);
     }
 
     //Получение списка общих друзей
-    public Collection<User> getMutualFriends(Integer id, Integer otherId) {
+    public Collection<User> getMutualFriends(Integer id, Integer otherId) throws UserNotFoundException {
         User user = userStorage.getUserById(id);
         User other = userStorage.getUserById(otherId);
 

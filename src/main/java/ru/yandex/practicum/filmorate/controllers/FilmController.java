@@ -3,6 +3,10 @@ package ru.yandex.practicum.filmorate.controllers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.exceptions.FilmAlreadyExistException;
+import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
+import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
+import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.film.service.FilmService;
 
@@ -21,22 +25,22 @@ public class FilmController {
     }
 
     @PostMapping
-    public Film add(@RequestBody @Valid Film film) {
+    public Film add(@RequestBody @Valid Film film) throws ValidationException, FilmAlreadyExistException {
         return filmService.add(film);
     }
 
     @PutMapping
-    public Film update(@RequestBody @Valid Film film) {
+    public Film update(@RequestBody @Valid Film film) throws FilmNotFoundException {
         return filmService.update(film);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteFilm(@PathVariable("id") Integer id) {
+    public void deleteFilm(@PathVariable("id") Integer id) throws FilmNotFoundException {
         filmService.remove(id);
     }
 
     @GetMapping("/{id}")
-    public Film findFilm(@PathVariable int id) {
+    public Film findFilm(@PathVariable int id) throws FilmNotFoundException {
         return filmService.get(id);
     }
 
@@ -47,13 +51,13 @@ public class FilmController {
 
     //пользователь ставит лайк фильму
     @PutMapping("/{id}/like/{userId}")
-    public void addLike(@PathVariable int id, @PathVariable int userId) {
+    public void addLike(@PathVariable int id, @PathVariable int userId) throws FilmNotFoundException, UserNotFoundException {
         filmService.addLike(id, userId);
     }
 
     //пользователь удаляет лайк
     @DeleteMapping("{id}/like/{userId}")
-    public void removeLike(@PathVariable int id, @PathVariable int userId) {
+    public void removeLike(@PathVariable int id, @PathVariable int userId) throws FilmNotFoundException, UserNotFoundException {
         filmService.removeLike(id, userId);
     }
 
