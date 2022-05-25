@@ -45,6 +45,7 @@ public class InMemoryFilmStorage extends InMemoryGeneralStorage<Film> implements
         return film;
     }
 
+    @SneakyThrows
     @Override
     public Film update(Film film) {
         if (general.containsKey(film.getId())) {
@@ -57,16 +58,18 @@ public class InMemoryFilmStorage extends InMemoryGeneralStorage<Film> implements
         }
     }
 
+    @SneakyThrows
     @Override
     public void remove(Integer id) {
         if (general.containsKey(id)) {
             general.remove(id);
             log.info("Удален " + general.get(id));
-        } else  {
+        } else {
             throw new FilmNotFoundException("Фильм с id " + id + " не найден!");
         }
     }
 
+    @SneakyThrows
     @Override
     public Film get(Integer id) {
         if (general.containsKey(id)) {

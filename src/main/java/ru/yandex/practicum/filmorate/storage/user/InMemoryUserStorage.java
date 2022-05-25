@@ -46,6 +46,7 @@ public class InMemoryUserStorage extends InMemoryGeneralStorage<User> implements
         return user;
     }
 
+    @SneakyThrows
     @Override
     public User update(User user) {
         if (general.containsKey(user.getId())) {
@@ -59,6 +60,7 @@ public class InMemoryUserStorage extends InMemoryGeneralStorage<User> implements
         }
     }
 
+    @SneakyThrows
     @Override
     public void remove(Integer id) {
         if (general.containsKey(id)) {
@@ -69,6 +71,7 @@ public class InMemoryUserStorage extends InMemoryGeneralStorage<User> implements
         }
     }
 
+    @SneakyThrows
     @Override
     public User getUserById(Integer id) {
         if (general.containsKey(id)) {
