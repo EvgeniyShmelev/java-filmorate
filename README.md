@@ -12,7 +12,16 @@ Template repository for Filmorate project.
 ### Получение списка пользователей
 
 ```sql
-    SELECT * FROM users;
     SELECT *
     FROM users;
 ```
+### Получение списка друзей пользователя
+
+````
+SELECT *
+FROM users 
+WHERE users.user_id in (SELECT friend_id
+FROM friends 
+WHERE friends.user_id = friends.friend_id
+AND friends.is_friends = true);
+````
