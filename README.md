@@ -8,5 +8,3 @@ Template repository for Filmorate project.
 
 ![BD](/src/main/resources/BD.png?raw=true "BD")
 
-
-
