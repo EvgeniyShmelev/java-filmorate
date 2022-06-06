@@ -1,2 +1,5 @@
-# java-filmorate
-Template repository for Filmorate project.
+# Filmorate
+Проект - аналог кинопоиска
+Схема базы данных:
+/src/main/resources/BD.png
+

@@ -6,37 +6,19 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.yandex.practicum.filmorate.controllers.ErrorResponse;
 
 //Класс обработки ошибок
-@RestControllerAdvice
+@RestControllerAdvice(value = "ru.yandex.practicum.filmorate.controllers")
 public class ErrorHandler {
 
 
-    @ExceptionHandler
+    @ExceptionHandler({UserAlreadyExistException.class, FilmAlreadyExistException.class, ValidationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleValidationException(final ValidationException e) {
+    public ErrorResponse handleAllAlreadyExistException(final Exception e) {
         return new ErrorResponse(e.getMessage());
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleUserAlreadyExistException(final UserAlreadyExistException e) {
-        return new ErrorResponse(e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleFilmAlreadyExistException(final FilmAlreadyExistException e) {
-        return new ErrorResponse(e.getMessage());
-    }
-
-    @ExceptionHandler
+    @ExceptionHandler({UserNotFoundException.class, FilmNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleUserNotFoundException(final UserNotFoundException e) {
-        return new ErrorResponse(e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleFilmNotFoundException(final FilmNotFoundException e) {
+    public ErrorResponse handleAllNotFoundException(final Exception e) {
         return new ErrorResponse(e.getMessage());
     }
 
