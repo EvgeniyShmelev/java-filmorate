@@ -1,6 +1,12 @@
+# java-filmorate
+Template repository for Filmorate project.
 # Filmorate
-Проект - аналог кинопоиска
+
+### Проект - аналог кинопоиска
+
 Схема базы данных:
-/src/main/resources/BD.png
-Проблема с кодировкой
+
+![BD](/src/main/resources/BD.png?raw=true "BD")
+
+
 
