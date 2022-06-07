@@ -1,8 +1,8 @@
-# java-filmorate
-Template repository for Filmorate project.
 # Filmorate
+___
 
-### Проект - аналог кинопоиска
+## Проект - аналог кинопоиска
+___
 
 Схема базы данных:
 
@@ -18,15 +18,15 @@ Template repository for Filmorate project.
 
 ### Получение пользователя по id
 
-````sql
+```sql
 SELECT *
 FROM users 
 WHERE user_id = {user_id}; --значение id должно поступить от пользователя
-````
+```
 
 ### Получение списка друзей пользователя
 
-````sql
+``sql
 SELECT *
 FROM users 
 WHERE users.user_id in (
@@ -34,11 +34,11 @@ SELECT friend_id
 FROM friends 
 WHERE user_id = {user_id}
 AND is_friends = 1);
-````
+```
 
 ### Получение списка общих друзей пользователей c user_id 1 и 2
 
-````sql
+```sql
 SELECT *
 FROM users 
 WHERE users.user_id in (
@@ -51,4 +51,4 @@ SELECT friends.friend_id
 FROM friends 
 WHERE friends.user_id = 2
 AND friends.is_friends = 1);
-````
+```
