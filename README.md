@@ -14,7 +14,7 @@ Template repository for Filmorate project.
 ````sql
     SELECT *
     FROM users;
-```
+````
 
 ### Получение пользователя по id
 
