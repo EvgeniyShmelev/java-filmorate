@@ -15,13 +15,40 @@ Template repository for Filmorate project.
     SELECT *
     FROM users;
 ```
+
+### Получение пользователя по id
+
+````
+SELECT *
+FROM users 
+WHERE user_id = {user_id}; --значение id должно поступить от пользователя
+````
+
 ### Получение списка друзей пользователя
 
 ````
 SELECT *
 FROM users 
-WHERE users.user_id in (SELECT friend_id
+WHERE users.user_id in (
+SELECT friend_id
 FROM friends 
-WHERE friends.user_id = friends.friend_id
-AND friends.is_friends = true);
+WHERE user_id = {user_id}
+AND is_friends = 1);
+````
+
+### Получение списка общих друзей пользователей c user_id 1 и 2
+
+````
+SELECT *
+FROM users 
+WHERE users.user_id in (
+SELECT friend_id
+FROM friends 
+WHERE friends.user_id = 1
+AND is_friends = 1)
+AND users.user_id in (
+SELECT friends.friend_id
+FROM friends 
+WHERE friends.user_id = 2
+AND friends.is_friends = 1);
 ````
