@@ -11,14 +11,14 @@ Template repository for Filmorate project.
 Примеры обращения к данным:
 ### Получение списка пользователей
 
-```sql
+````sql
     SELECT *
     FROM users;
 ```
 
 ### Получение пользователя по id
 
-````
+````sql
 SELECT *
 FROM users 
 WHERE user_id = {user_id}; --значение id должно поступить от пользователя
@@ -26,7 +26,7 @@ WHERE user_id = {user_id}; --значение id должно поступить
 
 ### Получение списка друзей пользователя
 
-````
+````sql
 SELECT *
 FROM users 
 WHERE users.user_id in (
@@ -38,7 +38,7 @@ AND is_friends = 1);
 
 ### Получение списка общих друзей пользователей c user_id 1 и 2
 
-````
+````sql
 SELECT *
 FROM users 
 WHERE users.user_id in (
