@@ -45,7 +45,7 @@ WHERE users.user_id in (
 SELECT friend_id
 FROM friends 
 WHERE friends.user_id = 1
-AND is_friends = 1)
+AND friends.is_friends = 1)
 AND users.user_id in (
 SELECT friends.friend_id
 FROM friends 
