@@ -26,7 +26,7 @@ WHERE user_id = {user_id}; --значение id должно поступить
 
 ### Получение списка друзей пользователя
 
-``sql
+```sql
 SELECT *
 FROM users 
 WHERE users.user_id in (
