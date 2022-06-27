@@ -2,29 +2,20 @@ package ru.yandex.practicum.filmorate.storage.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import ru.yandex.practicum.filmorate.exceptions.UserAlreadyExistException;
 import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
-import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.model.user.User;
 import ru.yandex.practicum.filmorate.storage.InMemoryGeneralStorage;
 
-import java.time.LocalDate;
 import java.util.*;
-import java.util.regex.Pattern;
+
+import static ru.yandex.practicum.filmorate.utill.UserValidation.validate;
 
 
 @Component
 @Slf4j
 public class InMemoryUserStorage extends InMemoryGeneralStorage<User> implements UserStorage {
-
-    public static boolean validate(User user) {
-
-        return StringUtils.hasText(user.getEmail())
-                && StringUtils.hasText(user.getLogin())
-                && Pattern.compile("(.+@.+\\..+)").matcher(user.getEmail()).matches()
-                && (user.getBirthday().isBefore(LocalDate.now()));
-    }
 
     @Override
     public User add(User user) throws UserAlreadyExistException, ValidationException {
@@ -84,5 +75,29 @@ public class InMemoryUserStorage extends InMemoryGeneralStorage<User> implements
                 userFriends.add(getUserById(userFriend));
         }
         return userFriends;
+    }
+
+    public void addFriend(Integer id, Integer friendId) throws UserNotFoundException {
+        User user = getUserById(id);
+        user.getFriends().add(friendId);
+    }
+
+    public void removeFriend(Integer id, Integer friendId) throws UserNotFoundException {
+        User user = getUserById(id);
+        user.getFriends().remove(friendId);
+    }
+
+    public List<User> getCommonFriends(Integer id, Integer otherId) throws UserNotFoundException {
+        User user = getUserById(id);
+        User other = getUserById(otherId);
+
+        List<User> commonFriends = new ArrayList<>();
+        if (user.getFriends() != null && other.getFriends() != null) {
+            for (Integer i : user.getFriends()) {
+                if (other.getFriends().contains(i))
+                    commonFriends.add(getUserById(i));
+            }
+        }
+        return commonFriends;
     }
 }

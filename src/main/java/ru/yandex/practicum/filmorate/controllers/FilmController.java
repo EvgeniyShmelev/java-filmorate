@@ -1,21 +1,16 @@
 package ru.yandex.practicum.filmorate.controllers;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exceptions.FilmAlreadyExistException;
-import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
-import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
-import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.storage.film.service.FilmService;
+import ru.yandex.practicum.filmorate.exceptions.*;
+import ru.yandex.practicum.filmorate.model.film.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
 
 import javax.validation.Valid;
 import java.util.Collection;
 
 @RestController
 @RequestMapping("/films")
-@Slf4j
 public class FilmController {
     private FilmService filmService;
 
@@ -40,7 +35,7 @@ public class FilmController {
     }
 
     @GetMapping("/{id}")
-    public Film findFilm(@PathVariable int id) throws FilmNotFoundException {
+    public Film findFilm(@PathVariable int id) throws FilmNotFoundException, EntityNotFoundException {
         return filmService.get(id);
     }
 
@@ -51,13 +46,13 @@ public class FilmController {
 
     //пользователь ставит лайк фильму
     @PutMapping("/{id}/like/{userId}")
-    public void addLike(@PathVariable int id, @PathVariable int userId) throws FilmNotFoundException, UserNotFoundException {
+    public void addLike(@PathVariable int id, @PathVariable int userId) throws FilmNotFoundException, UserNotFoundException, EntityNotFoundException {
         filmService.addLike(id, userId);
     }
 
     //пользователь удаляет лайк
     @DeleteMapping("{id}/like/{userId}")
-    public void removeLike(@PathVariable int id, @PathVariable int userId) throws FilmNotFoundException, UserNotFoundException {
+    public void removeLike(@PathVariable int id, @PathVariable int userId) throws FilmNotFoundException, UserNotFoundException, EntityNotFoundException {
         filmService.removeLike(id, userId);
     }
 

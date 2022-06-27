@@ -3,28 +3,23 @@ package ru.yandex.practicum.filmorate.storage.film;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import ru.yandex.practicum.filmorate.exceptions.FilmAlreadyExistException;
 import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
-import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.film.Film;
+import ru.yandex.practicum.filmorate.model.user.User;
 import ru.yandex.practicum.filmorate.storage.InMemoryGeneralStorage;
 
-import java.time.LocalDate;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.stream.Collectors;
+
+import static ru.yandex.practicum.filmorate.utill.FilmValidation.validate;
 
 @Component // аннотация указывает, что класс нужно добавить в контекст
 @Slf4j
 public class InMemoryFilmStorage extends InMemoryGeneralStorage<Film> implements FilmStorage {
 
-    public static boolean validate(Film film) {
-        final LocalDate releaseDate = LocalDate.of(1895, 12, 28);
-
-        return StringUtils.hasText(film.getName())
-                && (film.getDescription().length() <= 200)
-                && StringUtils.hasLength(film.getDescription())
-                && (film.getDuration() > 0)
-                && (film.getReleaseDate().isAfter(releaseDate));
-    }
 
     @Override
     public Film add(Film film) throws FilmAlreadyExistException, ValidationException {
@@ -67,11 +62,35 @@ public class InMemoryFilmStorage extends InMemoryGeneralStorage<Film> implements
     }
 
     @Override
-    public Film get(Integer id) throws FilmNotFoundException {
+    public Film getFilmById(Integer id) throws FilmNotFoundException {
         if (general.containsKey(id)) {
             return general.get(id);
         } else {
             throw new FilmNotFoundException("Фильм с id " + id + " не найден!");
         }
+    }
+
+    public void addLike(Film film, User user) {
+        if (film != null && user != null) {
+            if (film.getLikes() == null) film.setLikes(new HashSet<>());
+            film.getLikes().add(user.getId());
+        }
+    }
+
+    public void removeLike(Film film, User user) {
+        if (film != null && user != null && film.getLikes().contains(user.getId())) {
+            film.getLikes().remove(user.getId());
+        }
+    }
+
+    public Collection<Film> getMostPopular(Integer count) {
+        return getAll().stream()
+                .sorted((film1, film2) -> Integer.compare((film2 == null ||
+                                film2.getLikes() == null) ? 0 : film2.getLikes().size(),
+                        (film1 == null ||
+                                film1.getLikes() == null) ? 0 : film1.getLikes().size()))
+                .limit(count)
+                .collect(Collectors.toList());
+
     }
 }
