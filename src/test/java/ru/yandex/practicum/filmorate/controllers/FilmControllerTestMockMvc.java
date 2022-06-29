@@ -11,7 +11,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.yandex.practicum.filmorate.exceptions.FilmAlreadyExistException;
 import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
-import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.film.Film;
+import ru.yandex.practicum.filmorate.model.film.Rating;
 
 import java.time.LocalDate;
 import java.util.TreeSet;
@@ -31,7 +32,7 @@ class FilmControllerTestMockMvc {
     @Test
     public void add() throws Exception {
         Film film1 = new Film(1, "Jack Sparrow 1", "pirate 1",
-                LocalDate.of(2003, 1, 1), 120, new TreeSet<>());
+                LocalDate.of(2003, 1, 1), 120, new Rating(1));
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/films")
                                 .content(objectMapper.writeValueAsString(film1))
@@ -42,7 +43,7 @@ class FilmControllerTestMockMvc {
     @Test
     public void nullName() throws Exception {
         Film film2 = new Film(2, null, "pirate 2",
-                LocalDate.of(2004, 1, 1), 120, new TreeSet<>());
+                LocalDate.of(2004, 1, 1), 120, new Rating(1));
 
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/films")
@@ -54,7 +55,7 @@ class FilmControllerTestMockMvc {
     @Test
     public void emptyName() throws Exception {
         Film film3 = new Film(3, " ", "pirate 3",
-                LocalDate.of(2005, 1, 1), 120, new TreeSet<>());
+                LocalDate.of(2005, 1, 1), 120, new Rating(1));
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/films")
                                 .content(objectMapper.writeValueAsString(film3))
@@ -65,7 +66,7 @@ class FilmControllerTestMockMvc {
     @Test
     public void emptyDescription() throws Exception {
         Film film4 = new Film(4, "Jack Sparrow 3 ", "",
-                LocalDate.of(1900, 3, 25), 200, new TreeSet<>());
+                LocalDate.of(1900, 3, 25), 200, new Rating(1));
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/films")
                                 .content(objectMapper.writeValueAsString(film4))
@@ -77,7 +78,7 @@ class FilmControllerTestMockMvc {
     public void descriptionMoreThan200() throws Exception {
         String testDescription = "1".repeat(201);
         Film film5 = new Film(5, "Jack Sparrow 2", testDescription,
-                LocalDate.of(2004, 1, 1), 120, new TreeSet<>());
+                LocalDate.of(2004, 1, 1), 120, new Rating(1));
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/films")
                                 .content(objectMapper.writeValueAsString(film5))
@@ -88,7 +89,7 @@ class FilmControllerTestMockMvc {
     @Test
     public void negativeDuration() throws Exception {
         Film film6 = new Film(6, "Jack Sparrow 2", "pirate 2",
-                LocalDate.of(2004, 1, 1), -120, new TreeSet<>());
+                LocalDate.of(2004, 1, 1), -120, new Rating(1));
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/films")
                                 .content(objectMapper.writeValueAsString(film6))
@@ -99,7 +100,7 @@ class FilmControllerTestMockMvc {
     @Test
     public void oldReleaseDate() throws Exception {
         Film film7 = new Film(7, "Jack Sparrow 2", "pirate 2",
-                LocalDate.of(1895, 12, 27), 120, new TreeSet<>());
+                LocalDate.of(1895, 12, 27), 120, new Rating(1));
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/films")
                                 .content(objectMapper.writeValueAsString(film7))
@@ -110,7 +111,7 @@ class FilmControllerTestMockMvc {
     @Test
     public void updateNotExist() throws Exception {
         Film film1 = new Film(1, "Jack Sparrow 1", "pirate 1",
-                LocalDate.of(2003, 1, 1), 120, new TreeSet<>());
+                LocalDate.of(2003, 1, 1), 120, new Rating(1));
         mockMvc.perform(
                         MockMvcRequestBuilders.put("/films")
                                 .content(objectMapper.writeValueAsString(film1))
@@ -121,9 +122,9 @@ class FilmControllerTestMockMvc {
     @Test
     public void filmAddAlready() throws Exception {
         Film film1 = new Film(1, "Jack Sparrow 1", "pirate 1",
-                LocalDate.of(2003, 1, 1), 120, new TreeSet<>());
+                LocalDate.of(2003, 1, 1), 120, new Rating(1));
         Film film2 = new Film(1, "Jack Sparrow 1", "pirate 1",
-                LocalDate.of(2003, 1, 1), 120, new TreeSet<>());
+                LocalDate.of(2003, 1, 1), 120, new Rating(1));
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/films")
                                 .content(objectMapper.writeValueAsString(film1))

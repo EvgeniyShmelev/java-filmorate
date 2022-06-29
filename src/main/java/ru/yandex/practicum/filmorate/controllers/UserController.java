@@ -1,27 +1,22 @@
 package ru.yandex.practicum.filmorate.controllers;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.UserAlreadyExistException;
 import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
-import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.film.service.UserService;
+import ru.yandex.practicum.filmorate.model.user.User;
+import ru.yandex.practicum.filmorate.service.UserService;
 
 import javax.validation.Valid;
 import java.util.Collection;
 
 @RestController
 @RequestMapping("/users")
-@Slf4j
+@RequiredArgsConstructor
 public class UserController {
-    private  UserService userService;
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final UserService userService;
 
     @PostMapping
     public User add(@RequestBody @Valid User user) throws UserAlreadyExistException, ValidationException {
@@ -69,6 +64,6 @@ public class UserController {
     //Возвращаем список друзей, общих с другим пользователем
     @GetMapping("/{id}/friends/common/{otherId}")
     public Collection<User> getCommonFriends(@PathVariable int id, @PathVariable int otherId) throws UserNotFoundException {
-        return userService.getMutualFriends(id, otherId);
+        return userService.getCommonFriends(id, otherId);
     }
 }

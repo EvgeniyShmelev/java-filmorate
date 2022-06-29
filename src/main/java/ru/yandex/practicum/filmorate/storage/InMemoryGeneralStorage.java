@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -10,7 +10,7 @@ public abstract class InMemoryGeneralStorage<E> {
     //мапа для фильмов и юзеров
     protected Map<Integer, E> general = new ConcurrentHashMap<>();
 
-    public List<E> getAll() {
+    public Collection<E> getAll() {
         return new ArrayList<>(general.values());
     }
 
