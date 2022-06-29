@@ -51,13 +51,11 @@ public class UserDbStorage implements UserStorage {
         jdbcTemplate.update("update \"user\" set email = ?," +
                         " login = ?," +
                         " name = ?," +
-                        " birthday = ?" +
-                        " where user_id = ?",
+                        " birthday = ?",
                 user.getEmail(),
                 user.getLogin(),
                 user.getName(),
-                user.getBirthday(),
-                user.getId());
+                user.getBirthday());
 
         log.info("Обновлен пользователь: {}", user);
         return user;

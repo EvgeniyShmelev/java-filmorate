@@ -80,16 +80,14 @@ public class FilmDbStorage implements FilmStorage {
                 "description = ?, " +
                 "release_date = ?, " +
                 "duration = ?, " +
-                "rating_id = ?" +
-                "where film_id = ?";
+                "rating_id = ?";
 
         jdbcTemplate.update(sql,
                 film.getName(),
                 film.getDescription(),
                 film.getReleaseDate(),
                 film.getDuration(),
-                film.getMpa().getId(),
-                film.getId());
+                film.getMpa().getId());
 
 
         Set<Genre> genres = film.getGenres();
