@@ -1,57 +1,74 @@
 package ru.yandex.practicum.filmorate.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.exceptions.UserAlreadyExistException;
+import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.film.service.UserService;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
+import javax.validation.Valid;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/users")
 @Slf4j
 public class UserController {
-    private final Map<Integer, User> users = new HashMap<>();
+    private  UserService userService;
 
-    @GetMapping
-    public Collection<User> users() {
-        return new ArrayList<User>(users.values());
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping
-    public User create(@RequestBody User user) throws ValidationException {
-        if (validate(user)) {
-            log.info("Добавлен пользователь: " + user);
-            users.put(user.getId(), user);
-        } else {
-            throw new ValidationException("Данные не верны");
-        }
-        return user;
+    public User add(@RequestBody @Valid User user) throws UserAlreadyExistException, ValidationException {
+        return userService.add(user);
     }
 
     @PutMapping
-    public User update(@RequestBody User user) throws ValidationException {
-        if (validate(user)) {
-            log.info("Обновлены данные " + user);
-            users.put(user.getId(), user);
-            return user;
-        } else {
-            throw new ValidationException("Данные не верны");
-        }
+    public User update(@RequestBody @Valid User user) throws UserNotFoundException {
+        return userService.update(user);
     }
 
-    public static boolean validate(User user) {
+    @GetMapping("/{id}")
+    public User get(@PathVariable int id) throws UserNotFoundException {
+        return userService.getUserById(id);
+    }
 
-        return !(user.getEmail().isBlank())
-                && !(user.getLogin() == null)
-                && !(user.getLogin().isBlank())
-                && !(user.getLogin().contains(" "))
-                && Pattern.compile("(.+@.+\\..+)").matcher(user.getEmail()).matches()
-                && (user.getBirthday().isBefore(LocalDate.now()));
+    @DeleteMapping
+    public void remove(@PathVariable("id") int id) throws UserNotFoundException {
+        userService.remove(id);
+    }
+
+    @GetMapping
+    public Collection<User> getAll() {
+        return userService.getAll();
+    }
+
+    //Добавление в друзья
+    @PutMapping("/{id}/friends/{friendId}")
+    public void addFriend(@PathVariable int id, @PathVariable int friendId) throws UserNotFoundException {
+        userService.addFriend(id, friendId);
+    }
+
+    //Удаление из друзей
+    @DeleteMapping("/{id}/friends/{friendId}")
+    public void delFriend(@PathVariable int id, @PathVariable int friendId) throws UserNotFoundException {
+        userService.removeFriends(id, friendId);
+    }
+
+    //Возвращаем список пользователей, являющихся его друзьями
+    @GetMapping("/{id}/friends")
+    public Collection<User> getFriends(@PathVariable int id) throws UserNotFoundException {
+        return userService.getFriends(id);
+    }
+
+    //Возвращаем список друзей, общих с другим пользователем
+    @GetMapping("/{id}/friends/common/{otherId}")
+    public Collection<User> getCommonFriends(@PathVariable int id, @PathVariable int otherId) throws UserNotFoundException {
+        return userService.getMutualFriends(id, otherId);
     }
 }

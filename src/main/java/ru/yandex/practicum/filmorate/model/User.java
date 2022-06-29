@@ -2,12 +2,12 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import ru.yandex.practicum.filmorate.utill.ID;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
 import java.time.LocalDate;
+import java.util.Set;
 
 @AllArgsConstructor
 @Data
@@ -27,12 +27,11 @@ public class User {
     //дата рождения
     @Past(message = "Дата рождения не может быть в будущем!")
     private LocalDate birthday;
+    //Друзья пользователя
+    private Set<Integer> friends;
 
     public String getName() {
         //Имя для отображения может быть пустым — в таком случае будет использован логин
         return (name == null || name.isEmpty()) ? login : name;
-    }
-    public int getId() {
-       return id = ID.getUserId();
     }
 }
