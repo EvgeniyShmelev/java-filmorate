@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.dao;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -13,12 +14,10 @@ import java.util.Collection;
 
 @Component("RatingDbStorage")
 @Slf4j
+@RequiredArgsConstructor
 public class RatingDbStorage implements RatingStorage {
     private final JdbcTemplate jdbcTemplate;
 
-    public RatingDbStorage(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     @Override
     public Collection<Rating> getAllRating() {
@@ -40,11 +39,11 @@ public class RatingDbStorage implements RatingStorage {
         }
         SqlRowSet mpaRows = jdbcTemplate.queryForRowSet("select * from rating_mpa WHERE rating_id = ?", id);
         if (mpaRows.next()) {
-        Rating rating = new Rating(mpaRows.getInt("rating_id"),
-                mpaRows.getString("name"));
-        return rating;
-    } else
-        log.error("Рейтинг с идентификатором " + id + " не найден!");
+            Rating rating = new Rating(mpaRows.getInt("rating_id"),
+                    mpaRows.getString("name"));
+            return rating;
+        } else
+            log.error("Рейтинг с идентификатором " + id + " не найден!");
         throw new EntityNotFoundException("Рейтинг с идентификатором " + id + " не найден!");
     }
 }

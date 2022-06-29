@@ -1,6 +1,6 @@
 package ru.yandex.practicum.filmorate.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.*;
 import ru.yandex.practicum.filmorate.model.film.Film;
@@ -11,13 +11,9 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/films")
+@RequiredArgsConstructor
 public class FilmController {
-    private FilmService filmService;
-
-    @Autowired
-    public FilmController(FilmService filmService) {
-        this.filmService = filmService;
-    }
+    private final FilmService filmService;
 
     @PostMapping
     public Film add(@RequestBody @Valid Film film) throws ValidationException, FilmAlreadyExistException {

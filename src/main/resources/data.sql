@@ -1,9 +1,9 @@
-MERGE INTO genre KEY (genre_id) VALUES (1, 'РљРѕРјРµРґРёСЏ');
-MERGE INTO genre KEY (genre_id) VALUES (2, 'Р”СЂР°РјР°');
-MERGE INTO genre KEY (genre_id) VALUES (3, 'РњСѓР»СЊС‚С„РёР»СЊРј');
-MERGE INTO genre KEY (genre_id) VALUES (4, 'РўСЂРёР»Р»РµСЂ');
-MERGE INTO genre KEY (genre_id) VALUES (5, 'Р”РѕРєСѓРјРµРЅС‚Р°Р»СЊРЅС‹Р№');
-MERGE INTO genre KEY (genre_id) VALUES (6, 'Р‘РѕРµРІРёРє');
+MERGE INTO genre KEY (genre_id) VALUES (1, 'Комедия');
+MERGE INTO genre KEY (genre_id) VALUES (2, 'Драма');
+MERGE INTO genre KEY (genre_id) VALUES (3, 'Мультфильм');
+MERGE INTO genre KEY (genre_id) VALUES (4, 'Триллер');
+MERGE INTO genre KEY (genre_id) VALUES (5, 'Документальный');
+MERGE INTO genre KEY (genre_id) VALUES (6, 'Боевик');
 
 MERGE INTO rating_mpa KEY (rating_id) VALUES (1, 'G');
 MERGE INTO rating_mpa KEY (rating_id) VALUES (2, 'PG');
@@ -12,7 +12,7 @@ MERGE INTO rating_mpa KEY (rating_id) VALUES (4, 'R');
 MERGE INTO rating_mpa KEY (rating_id) VALUES (5, 'NC-17');
 
 
---СЏ РЅР°РїСЂРёРјРµСЂ С…РѕС‡Сѓ С‡С‚РѕР± Сѓ РјРµРЅСЏ С‚Р°Р±Р»РёС†С‹ СЃ Р¶Р°РЅСЂР°РјРё Рё РјРїР° Р·Р°РїРѕР»РЅСЏР»РёСЃСЊ РёР· data.sql.
---РЅР°РїРёСЃР°Р» С‚Р°Рј РёРЅСЃРµСЂС‚РѕРІ, РІСЃРµ С…РѕСЂРѕС€Рѕ, РЅРѕ  РєР°Рє СЃРґРµР»Р°С‚СЊ С‡С‚РѕР± РµСЃР»Рё РѕРЅРё С‚Р°Рј СѓР¶Рµ РµСЃС‚СЊ,
---С‚Рѕ Р±РѕР»СЊС€Рµ РЅРµ РёРЅСЃРµСЂС‚РёС‚СЊ. С‚Рѕ РµСЃС‚СЊ РµСЃР»Рё РЅР° РїСѓСЃС‚РѕР№ Р±Р°Р·Рµ Р·Р°РїСѓСЃРєР°РµС‚СЃСЏ РїСЂРёР»РєР°,
---С‚Рѕ РёРЅСЃРµСЂС‚РёС‚СЊ, РµСЃР»Рё РЅРµ РЅР° РїСѓСЃС‚РѕР№ - С‚Рѕ РЅРµС‚?
+--я например хочу чтоб у меня таблицы с жанрами и мпа заполнялись из data.sql.
+--написал там инсертов, все хорошо, но  как сделать чтоб если они там уже есть,
+--то больше не инсертить. то есть если на пустой базе запускается прилка,
+--то инсертить, если не на пустой - то нет?

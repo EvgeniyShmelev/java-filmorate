@@ -1,6 +1,6 @@
 package ru.yandex.practicum.filmorate.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,13 +13,9 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/genres")
+@RequiredArgsConstructor
 public class GenreController {
-    private GenreService genreService;
-
-    @Autowired
-    public GenreController(GenreService genreService) {
-        this.genreService = genreService;
-    }
+    private final GenreService genreService;
 
     //Возвращение жанра по идентификатору
     @GetMapping("/{id}")
