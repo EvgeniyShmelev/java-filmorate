@@ -33,7 +33,7 @@ public class GenreDbStorage implements GenreStorage {
     @Override
     public Genre getGenreById(int id) throws EntityNotFoundException {
         if (id < 1) {
-            log.error("Жанр с идентификатором " + id + " не найден!");
+            log.error("Жанр {} не найден!", id);
             throw new EntityNotFoundException("Жанр с идентификатором " + id + " не найден!");
         }
         SqlRowSet mpaRows = jdbcTemplate.queryForRowSet("select * from genre WHERE genre_id = ?", id);
@@ -42,7 +42,7 @@ public class GenreDbStorage implements GenreStorage {
                     mpaRows.getString("name"));
             return genre;
         } else
-            log.error("Жанр с идентификатором " + id + " не найден!");
+            log.error("Жанр {} не найден!", id);
         throw new EntityNotFoundException("Жанр с идентификатором " + id + " не найден!");
     }
 }

@@ -60,7 +60,7 @@ public class FilmDbStorage implements FilmStorage {
             Set<Genre> allGenres = getFilmGenres(film.getId());
             film.setGenres(allGenres == null ? new HashSet<>() : allGenres);
         }
-        log.info("Добавлен фильм: " + film);
+        log.info("Добавлен фильм: {}", film);
         return film;
     }
 
@@ -68,7 +68,7 @@ public class FilmDbStorage implements FilmStorage {
     public Film update(Film film) throws FilmNotFoundException {
         int id = film.getId();
         if (film.getId() < 1) {
-            log.error("Фильм с id " + film.getId() + " не найден!");
+            log.error("Фильм с id {} не найден!", film.getId());
             throw new FilmNotFoundException("Фильм с id " + id + " не найден!");
 
         }
@@ -104,14 +104,14 @@ public class FilmDbStorage implements FilmStorage {
             film.setGenres(allGenres == null ? new HashSet<>() : allGenres);
         }
 
-        log.info("Обновлён фильм: " + film);
+        log.info("Обновлён фильм: {}", film);
         return film;
     }
 
     @Override
     public void remove(Integer id) {
         jdbcTemplate.update("delete from film where film_id = ?", id);
-        log.info("Удалён фильм #" + id);
+        log.info("Удалён фильм: {}", id);
     }
 
     @Override
@@ -132,7 +132,7 @@ public class FilmDbStorage implements FilmStorage {
 
             return film;
         } else {
-            log.error("Фильм с идентификатором " + filmId + " не найден!");
+            log.error("Не найден фильм: {}", filmId);
             throw new FilmNotFoundException("Фильм с идентификатором " + filmId + " не найден!");
         }
     }
@@ -157,14 +157,14 @@ public class FilmDbStorage implements FilmStorage {
         jdbcTemplate.update(
                 "insert into likes (user_id, film_id) values (?,?)",
                 user.getId(), film.getId());
-        log.info("Пользователь " + user.getName() + " поставил лайк фильму " + film.getName());
+        log.info("Пользователь {} поставил лайк к фильму {}",user.getName(),film.getName());
     }
 
     public void removeLike(Film film, User user) {
         jdbcTemplate.update(
                 "delete from likes where user_id = ? and film_id = ?",
                 user.getId(), film.getId());
-        log.info("Пользователь \"" + user.getName() + "\" удалил свой лайк к фильму \"" + film.getName() + "\".");
+        log.info("Пользователь {} удалил свой лайк к фильму {}",user.getName(),film.getName());
     }
 
     public Collection<Film> getMostPopular(Integer count) {

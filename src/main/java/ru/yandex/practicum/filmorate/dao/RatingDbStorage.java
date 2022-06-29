@@ -34,7 +34,7 @@ public class RatingDbStorage implements RatingStorage {
     @Override
     public Rating getRatingById(int id) throws EntityNotFoundException {
         if (id < 1) {
-            log.error("Рейтинг с идентификатором " + id + " не найден!");
+            log.error("Рейтинг {} не найден!", id);
             throw new EntityNotFoundException("Рейтинг с идентификатором " + id + " не найден!");
         }
         SqlRowSet mpaRows = jdbcTemplate.queryForRowSet("select * from rating_mpa WHERE rating_id = ?", id);
@@ -43,7 +43,7 @@ public class RatingDbStorage implements RatingStorage {
                     mpaRows.getString("name"));
             return rating;
         } else
-            log.error("Рейтинг с идентификатором " + id + " не найден!");
+            log.error("Рейтинг {} не найден!", id);
         throw new EntityNotFoundException("Рейтинг с идентификатором " + id + " не найден!");
     }
 }

@@ -24,7 +24,7 @@ public class FriendDbStorage implements FriendStorage {
         User friend = userDbStorage.getUserById(friendId);
 
         jdbcTemplate.update("MERGE INTO friends f KEY (user_id, friend_id) VALUES (?, ?)", userId, friendId);
-        log.info("Пользователь \"" + user.getName() + "\" добавил в друзья \"" + friend.getName() + "\".");
+        log.info("Пользователь {}  добавил в друзья пользователя {}",user.getName(), friend.getName());
     }
 
     @Override
@@ -34,8 +34,7 @@ public class FriendDbStorage implements FriendStorage {
 
         jdbcTemplate.update("DELETE FROM friends f WHERE friend_id = ? AND user_id = ?",
                 friendId, userId);
-        log.info("Пользователь: \"" + user.getName() +
-                "\" удалил из друзей пользователя \"" + friend.getName() + "\".");
+        log.info("Пользователь {}  удалил из друзей пользователя {}",user.getName(), friend.getName());
     }
 
     public Collection<User> getAllUserFriends(Integer userId) {

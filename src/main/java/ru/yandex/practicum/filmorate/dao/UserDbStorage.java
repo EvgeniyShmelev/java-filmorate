@@ -37,7 +37,7 @@ public class UserDbStorage implements UserStorage {
                 user.getName(),
                 user.getBirthday());
 
-        log.info("Создан пользователь: " + user);
+        log.info("Создан пользователь: {}", user);
         return user;
     }
 
@@ -45,7 +45,7 @@ public class UserDbStorage implements UserStorage {
     public User update(User user) throws UserNotFoundException {
         int id = user.getId();
         if (user.getId() < 1) {
-            log.error("user с id " + user.getId() + " не найден!");
+            log.error("Пользователь {} не найден!", id);
             throw new UserNotFoundException("user с id " + id + " не найден!");
         }
         jdbcTemplate.update("update \"user\" set email = ?," +
@@ -59,14 +59,14 @@ public class UserDbStorage implements UserStorage {
                 user.getBirthday(),
                 user.getId());
 
-        log.info("Обновлен пользователь: " + user);
+        log.info("Обновлен пользователь: {}", user);
         return user;
     }
 
     @Override
     public void remove(Integer id) {
         jdbcTemplate.update("delete from \"user\" where user_id = ?", id);
-        log.info("Удалён пользователь #" + id);
+        log.info("Удален пользователь: {}", id);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class UserDbStorage implements UserStorage {
 
             return user;
         } else {
-            log.error("Пользователь #" + id + " не найден!");
+            log.error("Пользователь {} не найден!", id);
             throw new UserNotFoundException("Пользователь #" + id + " не найден!");
         }
     }
@@ -127,7 +127,7 @@ public class UserDbStorage implements UserStorage {
         User friend = getUserById(friendId);
 
         jdbcTemplate.update("MERGE INTO friends f KEY (user_id, friend_id) VALUES (?, ?)", id, friendId);
-        log.info("Пользователь \"" + user.getName() + "\" добавил в друзья \"" + friend.getName() + "\".");
+        log.info("Пользователь {}  добавил в друзья пользователя {}",user.getName(), friend.getName());
     }
 
     @Override
@@ -136,7 +136,7 @@ public class UserDbStorage implements UserStorage {
         User friend = getUserById(friendId);
 
         jdbcTemplate.update("DELETE FROM friends f WHERE friend_id = ? AND user_id = ?", friendId, id);
-        log.info("Пользователь: \"" + user.getName() + "\" удалил из друзей пользователя \"" + friend.getName() + "\".");
+        log.info("Пользователь {}  удалил из друзей пользователя {}",user.getName(), friend.getName());
     }
 
     //Получение списка общих друзей
