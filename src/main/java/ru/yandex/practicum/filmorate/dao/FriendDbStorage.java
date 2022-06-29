@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.dao;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,8 +14,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @RequiredArgsConstructor
+@Slf4j
 public class FriendDbStorage implements FriendStorage {
-    protected static final Logger log = LoggerFactory.getLogger(FriendDbStorage.class);
 
     private final JdbcTemplate jdbcTemplate;
     private final UserDbStorage userDbStorage;
